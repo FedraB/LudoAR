@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Ludo AR</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <link type="text/css" rel="stylesheet" href="main.css">
+</head>
+<body>
+    <script type="importmap">
+        {
+            "imports": {
+                "three": "https://unpkg.com/three@v0.152.2/build/three.module.js",
+                "three/addons/": "https://unpkg.com/three@v0.152.2/examples/jsm/"
+            }
+        }
+    </script>
+
+    <script type="module" src="main.js"></script>
+
+    <div id="overlay">
+        <h1>Bem-vindos ao Ludo AR!</h1>
+        <p>Preparados para uma partida épica de Ludo em Realidade Aumentada? Aqui estão algumas dicas para começar:</p>
+        <ul>
+            <li>Certifique-se de ter dois dados de 6 faces à mão.</li>
+            <li>Quando clicar em <strong>Começar a Partida</strong>, posicione o tabuleiro em uma superfície real ao seu redor.</li>
+            <li>Mova sua câmera pelo ambiente para que ela possa mapear o local. Assim que o reconhecimento for feito, o tabuleiro aparecerá na cena.</li>
+        </ul>
+        <p>Para uma experiência incrível, clique na tela do seu celular ou pressione o botão no seu controle/óculos RV. Pronto para a aventura?</p>
+        <button id="startButton">Começar a Partida</button>
+    </div>
+</body>
+</html>
