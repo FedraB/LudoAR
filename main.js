@@ -2,6 +2,7 @@ import * as THREE from 'three';
 import { ARButton } from 'three/addons/webxr/ARButton.js';
 import { createLudoBoard } from './models/board.js';
 import { createPawn } from './models/pawn.js';
+import { initHandTracking, handPoints } from './handTracking.js';
 
 let container;
 let camera, scene, renderer;
@@ -24,7 +25,7 @@ function init() {
 
     scene = new THREE.Scene();
 
-    camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 0.01, 20);
+    camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
 
     const light = new THREE.HemisphereLight(0xffffff, 0xbbbbff, 3);
     light.position.set(0.5, 1, 0.25);
@@ -42,16 +43,6 @@ function init() {
         document.getElementById('overlay').style.display = 'none';
     });
 
-    function onSelect() {
-        if (reticle.visible && !boardPlaced) {
-            board = new createLudoBoard();
-            reticle.matrix.decompose(board.position, board.quaternion, board.scale);
-            scene.add(board);
-            boardPlaced = true;
-            showPlayerSelection();
-        }
-    }
-
     controller = renderer.xr.getController(0);
     controller.addEventListener('select', onSelect);
     scene.add(controller);
@@ -62,6 +53,19 @@ function init() {
     scene.add(reticle);
 
     window.addEventListener('resize', onWindowResize);
+
+    // Inicializa o hand tracking
+    initHandTracking(scene);
+}
+
+function onSelect() {
+    if (reticle.visible && !boardPlaced) {
+        board = new createLudoBoard();
+        reticle.matrix.decompose(board.position, board.quaternion, board.scale);
+        scene.add(board);
+        boardPlaced = true;
+        showPlayerSelection();
+    }
 }
 
 function onWindowResize() {
@@ -117,7 +121,7 @@ function showPlayerSelection() { // Essa função criará botões em RA para a s
 
     const redPawns = [];
     for (let i = 0; i < 4 && i < redTiles.length; i++) {
-        const pawn = createPawn(0xff0000);
+        const pawn = createPawn(`red${i}`, 0xff0000);
         const tile = redTiles[i];
         if (tile) {
             pawn.position.copy(tile.position);
@@ -131,7 +135,7 @@ function showPlayerSelection() { // Essa função criará botões em RA para a s
 
     const yellowPawns = [];
     for (let i = 0; i < 4 && i < yellowTiles.length; i++) {
-        const pawn = createPawn(0xffd700);
+        const pawn = createPawn(`yellow${i}`, 0xffd700);
         const tile = yellowTiles[i];
         if (tile) {
             pawn.position.copy(tile.position);
@@ -144,7 +148,7 @@ function showPlayerSelection() { // Essa função criará botões em RA para a s
     }
 
     startGame();
-
+    
 }
 
 function startGame() {
